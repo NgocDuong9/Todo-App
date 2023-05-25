@@ -3,6 +3,7 @@ import Table from "react-bootstrap/Table";
 import { fetchAllUser } from "../services/UserServices";
 import ReactPaginate from "react-paginate";
 import ModalAddNew from "./ModalAddNew";
+import ModalEditUser from "./ModalEditUser";
 
 const TableUsers = (props) => {
   const [listUsers, setListUsers] = useState([]);
@@ -30,12 +31,23 @@ const TableUsers = (props) => {
   };
 
   const [isCheckModalSHow, setIsCheckModalSHow] = useState(false);
+  const [isCheckModalEdit, setIsCheckModalEdit] = useState(false);
+  const [dataUserEdit, setDataUserEdit] = useState({});
+
+  const handleEditUser = (user) => {
+    // console.log(user);
+    setDataUserEdit(user);
+    setIsCheckModalEdit(true);
+  };
+
   const handleClose = () => {
     setIsCheckModalSHow(false);
+    setIsCheckModalEdit(false);
   };
   const handleUpdateUser = (user) => {
     setListUsers([user, ...listUsers]);
   };
+
   return (
     <>
       <div className="my-3 add-new">
@@ -58,6 +70,7 @@ const TableUsers = (props) => {
             <th>Email</th>
             <th>First Name</th>
             <th>Last Name</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -70,6 +83,17 @@ const TableUsers = (props) => {
                   <td>{item.email}</td>
                   <td>{item.first_name}</td>
                   <td>{item.last_name}</td>
+                  <td>
+                    <button
+                      className="btn btn-warning"
+                      onClick={() => {
+                        handleEditUser(item);
+                      }}
+                    >
+                      Edit
+                    </button>
+                    <button className="btn btn-danger">Delete</button>
+                  </td>
                 </tr>
               );
             })}
@@ -98,6 +122,11 @@ const TableUsers = (props) => {
         show={isCheckModalSHow}
         handleClose={handleClose}
         handleUpdateUser={handleUpdateUser}
+      />
+      <ModalEditUser
+        show={isCheckModalEdit}
+        handleClose={handleClose}
+        dataUserEdit={dataUserEdit}
       />
     </>
   );
