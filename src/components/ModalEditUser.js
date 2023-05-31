@@ -26,9 +26,10 @@ const ModalEditUser = (props) => {
       toast.success("Update user success!");
     }
   };
+
   return (
     <>
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={show} onHide={handleClose} backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>Edit a Users</Modal.Title>
         </Modal.Header>
