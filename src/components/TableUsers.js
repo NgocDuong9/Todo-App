@@ -6,6 +6,7 @@ import ModalAddNew from "./ModalAddNew";
 import ModalEditUser from "./ModalEditUser";
 import _ from "lodash";
 import ModalConfirm from "./ModalComfirm";
+import { debounce } from "lodash";
 import "./TableUsers.scss";
 
 const TableUsers = (props) => {
@@ -30,6 +31,7 @@ const TableUsers = (props) => {
   };
   // console.log(listUsers);
   const handlePageClick = (event) => {
+    console.log(event);
     getUsers(+event.selected + 1);
   };
 
@@ -82,6 +84,17 @@ const TableUsers = (props) => {
     setListUsers(cloneUser);
   };
 
+  const handleSearch = debounce((e) => {
+    let term = e.target.value;
+    if (term) {
+      let cloneUser = _.cloneDeep(listUsers);
+      cloneUser = cloneUser.filter((item) => item.email.includes(term));
+      setListUsers(cloneUser);
+    } else {
+      getUsers(1);
+    }
+  }, 500);
+
   return (
     <>
       <div className="my-3 add-new">
@@ -96,6 +109,13 @@ const TableUsers = (props) => {
         >
           Add new users{" "}
         </button>
+      </div>
+      <div className="col-4 my-3">
+        <input
+          className="form-control"
+          placeholder="Search user by email..."
+          onChange={(e) => handleSearch(e)}
+        />
       </div>
       <Table striped bordered hover>
         <thead>
