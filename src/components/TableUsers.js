@@ -64,6 +64,11 @@ const TableUsers = (props) => {
     setIsCheckModalConfirm(true);
     setDataUserDelete(user);
   };
+  const handleDeleteUserFormModal = (user) => {
+    let cloneUser = _.cloneDeep(listUsers);
+    cloneUser = cloneUser.filter((item) => item.id !== user.id);
+    setListUsers(cloneUser);
+  };
 
   return (
     <>
@@ -157,6 +162,7 @@ const TableUsers = (props) => {
         show={isCheckModalConfirm}
         handleClose={handleClose}
         dataUserDelete={dataUserDelete}
+        handleDeleteUserFormModal={handleDeleteUserFormModal}
       />
     </>
   );
