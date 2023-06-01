@@ -14,6 +14,7 @@ const TableUsers = (props) => {
   const [listUsers, setListUsers] = useState([]);
   const [totalUsers, setTotalUsers] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
+  const [userExport, setUserExport] = useState([]);
 
   useEffect(() => {
     //call apis
@@ -96,12 +97,22 @@ const TableUsers = (props) => {
     }
   }, 500);
 
-  const csvData = [
-    ["firstname", "lastname", "email"],
-    ["Ahmed", "Tomi", "ah@smthing.co.com"],
-    ["Raed", "Labes", "rl@smthing.co.com"],
-    ["Yezzi", "Min l3b", "ymin@cocococo.com"],
-  ];
+  const handleUserExport = (event, done) => {
+    let result = [];
+    if (listUsers && listUsers.length > 0) {
+      result.push(["Id", "Email", "FirstName", "LastName"]);
+      listUsers.map((item, index) => {
+        let arr = [];
+        arr[0] = item.id;
+        arr[1] = item.email;
+        arr[2] = item.first_name;
+        arr[3] = item.last_name;
+        result.push(arr);
+      });
+      setUserExport(result);
+      done();
+    }
+  };
 
   return (
     <>
@@ -116,10 +127,11 @@ const TableUsers = (props) => {
           <input id="import" type="file" hidden />
 
           <CSVLink
-            data={csvData}
+            data={userExport}
             filename={"users.csv"}
             className="btn btn-primary"
-            target="_blank"
+            asyncOnClick={true}
+            onClick={handleUserExport}
           >
             <i className="fa-solid fa-file-arrow-down"></i> Export
           </CSVLink>
