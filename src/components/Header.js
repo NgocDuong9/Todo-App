@@ -7,7 +7,7 @@ import { useLocation, NavLink } from "react-router-dom";
 
 const Header = (props) => {
   const location = useLocation();
-  console.log(location);
+  // console.log(location);
   return (
     <>
       <Navbar bg="light" expand="lg">

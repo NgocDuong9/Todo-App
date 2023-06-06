@@ -1,9 +1,24 @@
 import { useState } from "react";
+import { loginApi } from "../services/UserServices";
+import { toast } from "react-toastify";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPasswod] = useState("");
   const [isShowPassword, setIsShowPassword] = useState(false);
+
+  const handleLogin = async () => {
+    if (!email || !password) {
+      toast.error("Email or Passowrd not required");
+      return;
+    }
+
+    let res = await loginApi("eve.holt@reqres.in", password);
+    if (res && res.token) {
+      localStorage.setItem("token", res.token);
+    }
+    console.log(res);
+  };
   return (
     <>
       <div className="login-container col-xl-4 col-12">
@@ -36,6 +51,7 @@ function Login() {
         <button
           className={email && password ? "active" : ""}
           disabled={email && password ? false : true}
+          onClick={() => handleLogin()}
         >
           Login
         </button>
