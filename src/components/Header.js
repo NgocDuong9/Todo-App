@@ -12,9 +12,13 @@ const Header = (props) => {
   const navigate = useNavigate();
 
   const handleLogOut = () => {
-    localStorage.removeItem("token");
-    navigate("/");
-    toast.success("Logout success!");
+    if (localStorage.getItem("token")) {
+      localStorage.removeItem("token");
+      navigate("/");
+      toast.success("Logout success!");
+    } else {
+      toast.error("You need login!");
+    }
   };
   return (
     <>
