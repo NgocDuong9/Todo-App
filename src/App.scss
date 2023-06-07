@@ -78,3 +78,16 @@ code {
     }
   }
 }
+
+.log-in {
+    color: #fff;
+    background-color: #28a745;
+    padding: 6px 12px;
+    text-decoration: none;
+    border-radius: 6px;
+  &:hover {
+    background-color: #218838;
+    color: #fff;
+
+  }
+}

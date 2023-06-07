@@ -6,8 +6,21 @@ import { ToastContainer } from "react-toastify";
 import { Route, Routes } from "react-router-dom";
 import Login from "./components/Login";
 import Home from "./components/Home/Home";
+import { useContext, useEffect } from "react";
+import { UserContext } from "./components/context/Context";
 
 function App() {
+  const { user, loginConText } = useContext(UserContext);
+  console.log(user);
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      loginConText(
+        localStorage.getItem("email"),
+        localStorage.getItem("token")
+      );
+    }
+  }, []);
   return (
     <>
       <div className="app-container">
