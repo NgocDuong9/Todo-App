@@ -27,7 +27,7 @@ function Login() {
     }
 
     setLoadingIcon(true);
-    let res = await loginApi(email, password);
+    let res = await loginApi(email.trim(), password);
     if (res && res.token) {
       loginConText(email, res.token);
       navigate("/");
@@ -41,6 +41,13 @@ function Login() {
 
   const handleGoBack = () => {
     navigate("/");
+  };
+
+  const handleEnterKey = (event) => {
+    if (event && event.key === "Enter") {
+      handleLogin();
+    }
+    console.log(event);
   };
   return (
     <>
@@ -59,6 +66,7 @@ function Login() {
             placeholder="Password"
             value={password}
             onChange={(e) => setPasswod(e.target.value)}
+            onKeyDown={(e) => handleEnterKey(e)}
           />
           <i
             className={

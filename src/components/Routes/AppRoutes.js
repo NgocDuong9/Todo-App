@@ -3,6 +3,7 @@ import Login from "../Login";
 import Home from "../Home/Home";
 import TableUsers from "../TableUsers";
 import PrivateRoutes from "./PrivateRoutes";
+import Notfound from "./Notfound";
 
 function AppRoutes() {
   return (
@@ -22,6 +23,7 @@ function AppRoutes() {
             </PrivateRoutes>
           }
         />
+        <Route path="*" element={<Notfound />} />
       </Routes>
     </>
   );
