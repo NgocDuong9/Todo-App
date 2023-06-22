@@ -5,24 +5,25 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import logoApp from "../assets/images/logo192.png";
 import { useLocation, NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useContext } from "react";
-import { UserContext } from "./context/Context";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { handleLogoutRedux } from "../redux/actions/userAction";
 
 const Header = (props) => {
   const location = useLocation();
-  // console.log(location);
   const navigate = useNavigate();
-  const { user, logout } = useContext(UserContext);
+  const user = useSelector((state) => state.user.account);
+  const dispatch = useDispatch();
 
   const handleLogOut = () => {
-    if (localStorage.getItem("token")) {
-      logout();
+    dispatch(handleLogoutRedux());
+  };
+  useEffect(() => {
+    if (user && user.auth === false) {
       navigate("/");
       toast.success("Logout success!");
-    } else {
-      toast.error("You need login!");
     }
-  };
+  }, [user]);
 
   return (
     <>

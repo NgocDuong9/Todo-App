@@ -1,42 +1,24 @@
-import { useContext, useState } from "react";
-import { loginApi } from "../services/UserServices";
+import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { UserContext } from "./context/Context";
-
+import { handleLoginRedux } from "../redux/actions/userAction";
+import { useDispatch, useSelector } from "react-redux";
 function Login() {
   const navigate = useNavigate();
-  const { loginConText } = useContext(UserContext);
+  const dispatch = useDispatch();
 
   const [email, setEmail] = useState("");
   const [password, setPasswod] = useState("");
   const [isShowPassword, setIsShowPassword] = useState(false);
-  const [loadingIcon, setLoadingIcon] = useState(false);
-
-  // useEffect(() => {
-  //   let token = localStorage.getItem("token");
-  //   if (token) {
-  //     navigate("/");
-  //   }
-  // }, []);
+  const isLoading = useSelector((state) => state.user.isLoading);
+  const account = useSelector((state) => state.user.account);
 
   const handleLogin = async () => {
     if (!email || !password) {
       toast.error("Email or Passowrd not required");
       return;
     }
-
-    setLoadingIcon(true);
-    let res = await loginApi(email.trim(), password);
-    if (res && res.token) {
-      loginConText(email, res.token);
-      navigate("/");
-    } else {
-      if (res && res.status === 400) {
-        toast.error(res.data.error);
-      }
-    }
-    setLoadingIcon(false);
+    dispatch(handleLoginRedux(email, password));
   };
 
   const handleGoBack = () => {
@@ -48,6 +30,13 @@ function Login() {
       handleLogin();
     }
   };
+
+  useEffect(() => {
+    if (account && account.auth === true) {
+      toast.success("Login success!");
+      navigate("/");
+    }
+  }, [account]);
   return (
     <>
       <div className="login-container col-xl-4 col-12">
@@ -83,7 +72,7 @@ function Login() {
           disabled={email && password ? false : true}
           onClick={() => handleLogin()}
         >
-          {loadingIcon && <i className="fas fa-spinner fa-pulse"></i>}
+          {isLoading && <i className="fas fa-spinner fa-pulse"></i>}
           &nbsp;Login
         </button>
         <div className="back">
