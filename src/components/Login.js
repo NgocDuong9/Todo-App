@@ -47,7 +47,6 @@ function Login() {
     if (event && event.key === "Enter") {
       handleLogin();
     }
-    console.log(event);
   };
   return (
     <>
